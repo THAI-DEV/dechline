@@ -9,15 +9,17 @@ import (
 )
 
 type service struct {
-	isMock     bool
-	isUseProxy bool
-	proxyUrl   string
+	isMock         bool
+	isShowResponse bool
+	isUseProxy     bool
+	proxyUrl       string
 }
 
-func New(isMock bool, isUseProxy bool, proxyUrl string) *service {
+func New(isMock bool, isShowResponse bool, isUseProxy bool, proxyUrl string) *service {
 	return &service{
-		isMock:   isMock,
-		proxyUrl: proxyUrl,
+		isMock:         isMock,
+		isShowResponse: isShowResponse,
+		proxyUrl:       proxyUrl,
 	}
 }
 
@@ -38,10 +40,17 @@ func (rcv *service) SendLineNotifyMsg(msg string, token string) {
 		}).
 		Post("https://notify-api.line.me/api/notify")
 
+	if err != nil {
+		fmt.Println(err)
+	}
+
 	// Explore response object
-	fmt.Println("Response Info:")
-	fmt.Println("  Error      :", err)
-	fmt.Println("  Status Code:", resp.StatusCode())
+	if rcv.isShowResponse {
+		fmt.Println("Response Info:")
+		fmt.Println("  Error      :", err)
+		fmt.Println("  Status Code:", resp.StatusCode())
+	}
+
 }
 
 func (rcv *service) SendLineNotifyMsgList(msg []string, token string) {
@@ -100,10 +109,17 @@ func (rcv *service) sendLineNotifyMsgAndImage(msg string, fileName string, token
 		}).
 		Post("https://notify-api.line.me/api/notify")
 
+	if err != nil {
+		fmt.Println(err)
+	}
+
 	// Explore response object
-	fmt.Println("Response Info:")
-	fmt.Println("  Error      :", err)
-	fmt.Println("  Status Code:", resp.StatusCode())
+	if rcv.isShowResponse {
+		fmt.Println("Response Info:")
+		fmt.Println("  Error      :", err)
+		fmt.Println("  Status Code:", resp.StatusCode())
+	}
+
 }
 
 func (rcv *service) sendLineNotifyMsgAndImageSteam(msg string, profileImgBytes []byte, token string) {
@@ -127,8 +143,15 @@ func (rcv *service) sendLineNotifyMsgAndImageSteam(msg string, profileImgBytes [
 		}).
 		Post("https://notify-api.line.me/api/notify")
 
+	if err != nil {
+		fmt.Println(err)
+	}
+
 	// Explore response object
-	fmt.Println("Response Info:")
-	fmt.Println("  Error      :", err)
-	fmt.Println("  Status Code:", resp.StatusCode())
+	if rcv.isShowResponse {
+		fmt.Println("Response Info:")
+		fmt.Println("  Error      :", err)
+		fmt.Println("  Status Code:", resp.StatusCode())
+	}
+
 }
